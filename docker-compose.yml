@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-university}
+      POSTGRES_USER: ${POSTGRES_USER:-university}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-university}
+    ports:
+      - "5432:5432"
+    volumes:
+      - university_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-university} -d ${POSTGRES_DB:-university}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  university_postgres_data:
+
